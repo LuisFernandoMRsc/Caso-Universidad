@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Dashboard Administrativo";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Dashboard</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Resumen de Solicitudes (Tickets)</li>
+    </ol>
+    <div class="row">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">Total Solicitudes: <h2>@ViewBag.TotalTickets</h2></div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-warning text-white mb-4">
+                <div class="card-body">Pendientes: <h2>@ViewBag.PendingTickets</h2></div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">Resueltas: <h2>@ViewBag.ResolvedTickets</h2></div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-secondary text-white mb-4">
+                <div class="card-body">Cerradas: <h2>@ViewBag.ClosedTickets</h2></div>
+            </div>
+        </div>
+    </div>
+</div>

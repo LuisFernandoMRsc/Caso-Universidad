@@ -1,0 +1,206 @@
+@model IEnumerable<CampusConnect.Web.Models.Entities.Ticket>
+
+@{
+    ViewData["Title"] = "Módulo de Reportes";
+    var ticketsByType = ViewBag.TicketsByType as Dictionary<string, int> ?? new Dictionary<string, int>();
+    var ticketsByPriority = ViewBag.TicketsByPriority as Dictionary<string, int> ?? new Dictionary<string, int>();
+}
+
+<div class="container-fluid mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-bar-chart-fill"></i> Reporte Consolidado de Solicitudes</h2>
+        <button class="btn btn-outline-secondary" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir / Exportar PDF</button>
+    </div>
+
+    <!-- Tarjetas de Métricas -->
+    <div class="row mb-4">
+        <div class="col-md-2">
+            <div class="card text-center bg-light border-dark shadow-sm">
+                <div class="card-body py-2">
+                    <small class="text-muted fw-bold">TOTAL RECIBIDAS</small>
+                    <h3 class="my-1">@ViewBag.TotalReceived</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center bg-light border-warning shadow-sm">
+                <div class="card-body py-2">
+                    <small class="text-warning fw-bold">PENDIENTES</small>
+                    <h3 class="my-1 text-warning">@ViewBag.TotalPending</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center bg-light border-info shadow-sm">
+                <div class="card-body py-2">
+                    <small class="text-info fw-bold">EN PROCESO</small>
+                    <h3 class="my-1 text-info">@ViewBag.TotalInProgress</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-light border-success shadow-sm">
+                <div class="card-body py-2">
+                    <small class="text-success fw-bold">RESUELTAS</small>
+                    <h3 class="my-1 text-success">@ViewBag.TotalResolved</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-light border-secondary shadow-sm">
+                <div class="card-body py-2">
+                    <small class="text-secondary fw-bold">CERRADAS</small>
+                    <h3 class="my-1 text-secondary">@ViewBag.TotalClosed</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Distribuciones por Tipo y Prioridad -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white">Solicitudes por Tipo</div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @foreach (var kvp in ticketsByType)
+                        {
+                            <li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <span>@kvp.Key</span>
+                                <span class="badge bg-primary rounded-pill">@kvp.Value</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white">Solicitudes por Prioridad</div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @foreach (var kvp in ticketsByPriority)
+                        {
+                            <li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <span>@kvp.Key</span>
+                                <span class="badge bg-danger rounded-pill">@kvp.Value</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros de Búsqueda -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Filtrar por Estado</label>
+                    <select name="status" class="form-select">
+                        <option value="">-- Todos los Estados --</option>
+                        <option value="Pendiente" selected="@(ViewBag.SelectedStatus == "Pendiente")">Pendiente</option>
+                        <option value="En Proceso" selected="@(ViewBag.SelectedStatus == "En Proceso")">En Proceso</option>
+                        <option value="Resuelta" selected="@(ViewBag.SelectedStatus == "Resuelta")">Resuelta</option>
+                        <option value="Cerrada" selected="@(ViewBag.SelectedStatus == "Cerrada")">Cerrada</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Filtrar por Prioridad</label>
+                    <select name="priority" class="form-select">
+                        <option value="">-- Todas las Prioridades --</option>
+                        <option value="Baja" selected="@(ViewBag.SelectedPriority == "Baja")">Baja</option>
+                        <option value="Media" selected="@(ViewBag.SelectedPriority == "Media")">Media</option>
+                        <option value="Alta" selected="@(ViewBag.SelectedPriority == "Alta")">Alta</option>
+                        <option value="Urgente" selected="@(ViewBag.SelectedPriority == "Urgente")">Urgente</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Filtrar por Tipo</label>
+                    <input type="text" name="type" value="@ViewBag.SelectedType" class="form-control" placeholder="Ej. Equipamiento, Soporte..." />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla Detallada -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Listado Consolidado Detallado</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Tipo</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                            <th>Estudiante</th>
+                            <th>Responsable Asignado</th>
+                            <th>Recurso Afectado</th>
+                            <th>Fecha Registro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center py-4 text-muted">No se encontraron solicitudes con los filtros aplicados.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var t in Model)
+                            {
+                                <tr>
+                                    <td>#@t.Id</td>
+                                    <td class="fw-bold">@t.Title</td>
+                                    <td>@t.Type</td>
+                                    <td>
+                                        @if (t.Priority == "Alta" || t.Priority == "Urgente")
+                                        {
+                                            <span class="badge bg-danger">@t.Priority</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">@t.Priority</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (t.Status == "Pendiente")
+                                        {
+                                            <span class="badge bg-warning text-dark">Pendiente</span>
+                                        }
+                                        else if (t.Status == "En Proceso")
+                                        {
+                                            <span class="badge bg-info text-dark">En Proceso</span>
+                                        }
+                                        else if (t.Status == "Resuelta")
+                                        {
+                                            <span class="badge bg-success">Resuelta</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Cerrada</span>
+                                        }
+                                    </td>
+                                    <td>@t.Student?.Name</td>
+                                    <td>@(t.AssignedSupport != null ? t.AssignedSupport.Name : "Sin Asignar")</td>
+                                    <td>@(t.Resource != null ? t.Resource.Name : "N/A")</td>
+                                    <td>@t.CreatedAt.ToString("g")</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

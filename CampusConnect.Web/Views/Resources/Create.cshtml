@@ -1,0 +1,58 @@
+@model CampusConnect.Web.Models.Entities.Resource
+
+@{
+    ViewData["Title"] = "Crear Recurso";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Registrar Nuevo Recurso Institucional</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Nombre del Recurso</label>
+                            <input asp-for="Name" class="form-control" placeholder="Ej. Laboratorio 202, Proyector HDMI A" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Type" class="form-label">Tipo de Recurso</label>
+                            <select asp-for="Type" class="form-select" required>
+                                <option value="Infraestructura">Infraestructura (Aula, Auditorio)</option>
+                                <option value="Laboratorio">Laboratorio</option>
+                                <option value="Equipamiento">Equipamiento (Proyector, Parlante)</option>
+                                <option value="Soporte Tecnológico">Soporte Tecnológico (WiFi, PC, Servidor)</option>
+                            </select>
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Descripción</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Detalles de ubicación, capacidad o especificaciones"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Status" class="form-label">Estado</label>
+                            <select asp-for="Status" class="form-select" required>
+                                <option value="Activo">Activo</option>
+                                <option value="Mantenimiento">En Mantenimiento</option>
+                                <option value="Inactivo">Inactivo / Fuera de servicio</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                            <button type="submit" class="btn btn-success">Guardar Recurso</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

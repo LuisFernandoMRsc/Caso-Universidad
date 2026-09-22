@@ -1,0 +1,70 @@
+@model CampusConnect.Web.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+    Layout = "_Layout";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-lg border-0 rounded-lg">
+            <div class="card-header bg-primary text-white text-center py-4">
+                <h3 class="fw-bold mb-0"><i class="bi bi-shield-lock"></i> CAMPUS CONNECT</h3>
+                <small class="text-white-50">Portal Administrativo Universitario</small>
+            </div>
+            <div class="card-body p-4">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger py-2">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <div><i class="bi bi-exclamation-circle"></i> @error.ErrorMessage</div>
+                        }
+                    </div>
+                }
+
+                <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-bold">Correo Institucional</label>
+                        <input asp-for="Email" class="form-control form-control-lg" placeholder="ejemplo@campus.edu" required autofocus />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-bold">Contraseña</label>
+                        <input asp-for="Password" class="form-control form-control-lg" placeholder="••••••••" required />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" asp-for="RememberMe" />
+                        <label class="form-check-label text-muted" asp-for="RememberMe">Recordar mi sesión</label>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                            <i class="bi bi-box-arrow-in-right"></i> Ingresar al Sistema
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-light p-3">
+                <p class="text-muted small fw-bold mb-2">Cuentas de prueba para calificar:</p>
+                <div class="d-flex flex-column gap-1 small">
+                    <div class="bg-white p-2 rounded border">
+                        <span class="badge bg-danger">Administrador</span>
+                        <code class="ms-1">admin@campus.edu</code> / <code>admin123</code>
+                    </div>
+                    <div class="bg-white p-2 rounded border">
+                        <span class="badge bg-warning text-dark">Soporte Técnico</span>
+                        <code class="ms-1">soporte@campus.edu</code> / <code>soporte123</code>
+                    </div>
+                    <div class="bg-white p-2 rounded border">
+                        <span class="badge bg-info text-dark">Estudiante</span>
+                        <code class="ms-1">estudiante@campus.edu</code> / <code>estudiante123</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

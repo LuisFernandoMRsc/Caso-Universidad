@@ -1,0 +1,60 @@
+@model CampusConnect.Web.Models.Entities.Resource
+
+@{
+    ViewData["Title"] = "Editar Recurso";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">Editar Recurso Institucional</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Nombre del Recurso</label>
+                            <input asp-for="Name" class="form-control" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Type" class="form-label">Tipo de Recurso</label>
+                            <select asp-for="Type" class="form-select" required>
+                                <option value="Infraestructura">Infraestructura (Aula, Auditorio)</option>
+                                <option value="Laboratorio">Laboratorio</option>
+                                <option value="Equipamiento">Equipamiento (Proyector, Parlante)</option>
+                                <option value="Soporte Tecnológico">Soporte Tecnológico (WiFi, PC, Servidor)</option>
+                            </select>
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Descripción</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Status" class="form-label">Estado</label>
+                            <select asp-for="Status" class="form-select" required>
+                                <option value="Activo">Activo</option>
+                                <option value="Mantenimiento">En Mantenimiento</option>
+                                <option value="Inactivo">Inactivo / Fuera de servicio</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Actualizar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
